@@ -30,6 +30,6 @@ To just download the certificate you need to run a command like this:
 ```
 AWS_ACCESS_KEY_ID="your_key" \
 AWS_SECRET_ACCESS_KEY="your_secret" \
-S3_BUCKET="the_bucket" \
-letsencrypt --agree-tos -a letsencrypt-s3front:s3front_authenticator \
+letsencrypt --agree-tos -a letsencrypt-s3front:auth \
+--letsencrypt-s3front:auth-s3-bucket="the_bucket" \
 -d your_domain.com certonly

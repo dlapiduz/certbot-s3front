@@ -4,7 +4,7 @@ from setuptools import setup
 from setuptools import find_packages
 
 
-version = '0.0.1'
+version = '0.2.0.dev0'
 
 install_requires = [
     'acme=={0}'.format(version),
@@ -29,7 +29,7 @@ docs_extras = [
 setup(
     name='letsencrypt-s3front',
     version=version,
-    description="CloudFront plugin for Let's Encrypt client",
+    description="S3/CloudFront plugin for Let's Encrypt client",
     url='https://github.com/dlapiduz/letsencrypt-s3front',
     author="Diego Lapiduz",
     author_email='diego@lapiduz.com',
@@ -60,8 +60,8 @@ setup(
     },
     entry_points={
         'letsencrypt.plugins': [
-            's3front_authenticator = letsencrypt_s3front.authenticator:Authenticator',
-            # 'cloudfront_installer = letsencrypt_cloudfront:Configurator',
+            'auth = letsencrypt_s3front.authenticator:Authenticator',
+            # 'installer = letsencrypt_s3front.installer:Installer',
         ],
     },
 )
