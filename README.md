@@ -16,12 +16,15 @@ validation that both HTTP and HTTPS traffic are enabled (at least while you get
 ### Setup
 
 1. Install the letsencrypt client [https://letsencrypt.readthedocs.org/en/latest/using.html#installation]()
-1. Clone this repo locally: `git clone https://github.com/dlapiduz/letsencrypt-s3front.git`
-1. Install it:
 
-   ```
-  cd letsencrypt-s3front
-  python setup.py Install
+  ```
+  pip install letsencrypt
+  ```
+
+1. Install the letsencrypt-s3front plugin
+
+  ```
+  pip install letsencrypt-s3front
   ```
 
 ### How to use it
