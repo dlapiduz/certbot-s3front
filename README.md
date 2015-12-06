@@ -26,10 +26,16 @@ validation that both HTTP and HTTPS traffic are enabled (at least while you get
 
 ### How to use it
 
-To just download the certificate you need to run a command like this:
+To generate a certificate and install it in a CloudFront distribution:
 ```
 AWS_ACCESS_KEY_ID="your_key" \
 AWS_SECRET_ACCESS_KEY="your_secret" \
 letsencrypt --agree-tos -a letsencrypt-s3front:auth \
---letsencrypt-s3front:auth-s3-bucket="the_bucket" \
--d your_domain.com certonly
+--letsencrypt-s3front:auth-s3-bucket the_bucket \
+-i letsencrypt-s3front:installer \
+--letsencrypt-s3front:installer-cf-distribution-id your_cf_distribution_id \
+-d the_domain
+```
+
+Follow the screen prompts and you should end up with the certificate in your
+distribution. It may take a couple minutes to update.
