@@ -61,7 +61,7 @@ setup(
     entry_points={
         'letsencrypt.plugins': [
             'auth = letsencrypt_s3front.authenticator:Authenticator',
-            # 'installer = letsencrypt_s3front.installer:Installer',
+            'installer = letsencrypt_s3front.installer:Installer',
         ],
     },
 )

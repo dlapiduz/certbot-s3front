@@ -22,3 +22,4 @@ letsencrypt.log
 
 # auth --cert-path --chain-path
 /*.pem
+.env
