@@ -1,14 +1,13 @@
 import sys
 
-from setuptools import setup
+from distutils.core import setup
 from setuptools import find_packages
 
-
-version = '0.2.0.dev0'
+version = '0.1.0'
 
 install_requires = [
-    'acme=={0}'.format(version),
-    'letsencrypt=={0}'.format(version),
+    'acme>={0}'.format(version),
+    'letsencrypt>={0}'.format(version),
     'PyOpenSSL',
     'pyparsing>=1.5.5',  # Python3 support; perhaps unnecessary?
     'setuptools',  # pkg_resources
@@ -51,13 +50,10 @@ setup(
         'Topic :: System :: Systems Administration',
         'Topic :: Utilities',
     ],
-
     packages=find_packages(),
     include_package_data=True,
     install_requires=install_requires,
-    extras_require={
-        'docs': docs_extras,
-    },
+    keywords = ['letsencrypt', 'cloudfront', 's3'],
     entry_points={
         'letsencrypt.plugins': [
             'auth = letsencrypt_s3front.authenticator:Authenticator',
