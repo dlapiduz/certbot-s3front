@@ -5,7 +5,7 @@ an AWS CloudFront distribution of an S3 bucket.
 
 ### Before you start
 
-Follow a guide like this one [http://docs.aws.amazon.com/gettingstarted/latest/swh/website-hosting-intro.html]()
+Follow a guide like this one [https://docs.aws.amazon.com/gettingstarted/latest/swh/website-hosting-intro.html](https://docs.aws.amazon.com/gettingstarted/latest/swh/website-hosting-intro.html)
 to use S3 and CloudFront for static site hosting.
 
 Once you are done you should have a domain pointing to a CloudFront distribution
@@ -15,7 +15,7 @@ validation that both HTTP and HTTPS traffic are enabled (at least while you get
 
 ### Setup
 
-1. Install the letsencrypt client [https://letsencrypt.readthedocs.org/en/latest/using.html#installation]()
+1. Install the letsencrypt client [https://letsencrypt.readthedocs.org/en/latest/using.html#installation](https://letsencrypt.readthedocs.org/en/latest/using.html#installation)
 
   ```
   pip install letsencrypt
