@@ -67,6 +67,10 @@ class Installer(common.Plugin):
         # Update CloudFront config to use the new one
         cf_cfg = cf_client.get_distribution_config(Id=self.conf('cf-distribution-id'))
         cf_cfg['DistributionConfig']['ViewerCertificate']['IAMCertificateId'] = cert_id
+        try:
+            cf_cfg['DistributionConfig']['ViewerCertificate'].pop('CloudFrontDefaultCertificate')
+        except KeyError:
+            pass
         response = cf_client.update_distribution(DistributionConfig=cf_cfg['DistributionConfig'],
                                                  Id=self.conf('cf-distribution-id'),
                                                  IfMatch=cf_cfg['ETag'])
