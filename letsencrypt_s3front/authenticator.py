@@ -28,6 +28,8 @@ class Authenticator(common.Plugin):
     def add_parser_arguments(cls, add):
         add("s3-bucket", default=os.getenv('S3_BUCKET'),
             help="Bucket referenced by CloudFront distribution")
+        add("s3-region", default="us-west-1",
+            help="Bucket region name")
 
     def __init__(self, *args, **kwargs):
         super(Authenticator, self).__init__(*args, **kwargs)
@@ -53,7 +55,7 @@ class Authenticator(common.Plugin):
         # upload the challenge file to the desired s3 bucket
         # then run simple http verification
         response, validation = achall.response_and_validation()
-        s3 = boto3.resource('s3')
+        s3 = boto3.resource('s3', region_name=self.conf('s3-region'))
 
         s3.Bucket(self.conf('s3-bucket')).put_object(Key=achall.chall.path[1:],
                                                      Body=validation,
