@@ -28,7 +28,7 @@ class Authenticator(common.Plugin):
     def add_parser_arguments(cls, add):
         add("s3-bucket", default=os.getenv('S3_BUCKET'),
             help="Bucket referenced by CloudFront distribution")
-        add("s3-region", default="us-west-1",
+        add("s3-region", default="us-east-1",
             help="Bucket region name")
 
     def __init__(self, *args, **kwargs):
