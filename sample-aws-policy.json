@@ -1,0 +1,45 @@
+{
+    "Version": "2012-10-17",
+    "Id": "letsencrypt-s3front sample policy"
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iam:UploadServerCertificate",
+                "iam:UpdateServerCertificate",
+                "iam:DeleteServerCertificate"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::YOUR-BUCKET/"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:DeleteObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::YOUR-BUCKET/.well-known/"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudfront:GetDistributionConfig",
+                "cloudfront:UpdateDistribution"
+            ],
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+}
