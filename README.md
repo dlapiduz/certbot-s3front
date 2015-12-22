@@ -35,7 +35,7 @@ AWS_ACCESS_KEY_ID="your_key" \
 AWS_SECRET_ACCESS_KEY="your_secret" \
 letsencrypt --agree-tos -a letsencrypt-s3front:auth \
 --letsencrypt-s3front:auth-s3-bucket the_bucket \
-[ --letsencrypt-s3front:auth-s3-region your-bucket-region-name ] (default is us-west-1) \
+[ --letsencrypt-s3front:auth-s3-region your-bucket-region-name ] (default is us-east-1) \
 -i letsencrypt-s3front:installer \
 --letsencrypt-s3front:installer-cf-distribution-id your_cf_distribution_id \
 -d the_domain
@@ -43,3 +43,5 @@ letsencrypt --agree-tos -a letsencrypt-s3front:auth \
 
 Follow the screen prompts and you should end up with the certificate in your
 distribution. It may take a couple minutes to update.
+
+To automate the renewal process without prompts (for example, with a monthly cron), you can add the letsencrypt parameters --renew-by-default --text

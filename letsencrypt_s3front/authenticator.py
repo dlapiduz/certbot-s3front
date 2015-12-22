@@ -72,4 +72,8 @@ class Authenticator(common.Plugin):
 
     def cleanup(self, achalls):
         # pylint: disable=missing-docstring,no-self-use,unused-argument
+        s3 = boto3.resource('s3', region_name=self.conf('s3-region'))
+        client = s3.meta.client
+        for achall in achalls:
+            client.delete_object(Bucket=self.conf('s3-bucket'), Key=achall.chall.path[1:])
         return None
