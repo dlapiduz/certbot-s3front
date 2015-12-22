@@ -35,7 +35,7 @@ AWS_ACCESS_KEY_ID="your_key" \
 AWS_SECRET_ACCESS_KEY="your_secret" \
 letsencrypt --agree-tos -a letsencrypt-s3front:auth \
 --letsencrypt-s3front:auth-s3-bucket the_bucket \
-[ --letsencrypt-s3front:auth-s3-region your-bucket-region-name ] (default is us-west-1) \
+[ --letsencrypt-s3front:auth-s3-region your-bucket-region-name ] (default is us-east-1) \
 -i letsencrypt-s3front:installer \
 --letsencrypt-s3front:installer-cf-distribution-id your_cf_distribution_id \
 -d the_domain
