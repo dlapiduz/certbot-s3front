@@ -16,7 +16,8 @@
         {
             "Effect": "Allow",
             "Action": [
-                "s3:PutObject"
+                "s3:PutObject",
+                "s3:PutObjectACL"
             ],
             "Resource": [
                 "arn:aws:s3:::YOUR-BUCKET/"
