@@ -43,3 +43,5 @@ letsencrypt --agree-tos -a letsencrypt-s3front:auth \
 
 Follow the screen prompts and you should end up with the certificate in your
 distribution. It may take a couple minutes to update.
+
+To automate the renewal process without prompts (for example, with a monthly cron), you can add the letsencrypt parameters --renew-by-default --text
