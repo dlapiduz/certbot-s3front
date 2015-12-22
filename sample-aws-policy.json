@@ -20,7 +20,7 @@
                 "s3:PutObjectACL"
             ],
             "Resource": [
-                "arn:aws:s3:::YOUR-BUCKET/"
+                "arn:aws:s3:::YOUR-BUCKET/*"
             ]
         },
         {
@@ -29,7 +29,7 @@
                 "s3:DeleteObject"
             ],
             "Resource": [
-                "arn:aws:s3:::YOUR-BUCKET/.well-known/"
+                "arn:aws:s3:::YOUR-BUCKET/.well-known/*"
             ]
         },
         {
