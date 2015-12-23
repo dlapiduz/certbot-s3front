@@ -66,7 +66,9 @@ class Installer(common.Plugin):
         cert_id = response['ServerCertificateMetadata']['ServerCertificateId']
         # Update CloudFront config to use the new one
         cf_cfg = cf_client.get_distribution_config(Id=self.conf('cf-distribution-id'))
-        cf_cfg['DistributionConfig']['ViewerCertificate']['IAMCertificateId'] = cert_id
+        cf_cfg['DistributionConfig']['ViewerCertificate']['IAMCertificateId'] = cert_id        
+        cf_cfg['DistributionConfig']['ViewerCertificate']['Certificate'] = cert_id
+        cf_cfg['DistributionConfig']['ViewerCertificate']['CertificateSource'] = "iam"
         try:
             cf_cfg['DistributionConfig']['ViewerCertificate'].pop('CloudFrontDefaultCertificate')
         except KeyError:
@@ -81,7 +83,7 @@ class Installer(common.Plugin):
                 ServerCertificateName=name
             )
         except botocore.exceptions.ClientError as e:
-            logger.error(e)
+            pass
 
         # Rename cert to the new one
         client.update_server_certificate(
