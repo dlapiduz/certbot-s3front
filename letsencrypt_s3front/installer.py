@@ -1,5 +1,6 @@
 """S3/CloudFront Let's Encrypt installer plugin."""
 import os
+import sys
 import logging
 import re
 import subprocess
@@ -47,7 +48,9 @@ class Installer(common.Plugin):
         """
         Upload Certificate to IAM and assign it to the CloudFront distribution
         """
-
+        if self.config.rsa_key_size > 2048:
+            print "The maximum public key size allowed for Cloudfront is 2048 (http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/SecureConnections.html)\n Please, use --rsa_key_size 2048 or edit your cli.ini"
+            sys.exit(1)
         client = boto3.client('iam')
         cf_client = boto3.client('cloudfront')
 
@@ -55,7 +58,7 @@ class Installer(common.Plugin):
         body = open(cert_path).read()
         key = open(key_path).read()
         chain = open(chain_path).read()
-        # Uplaod cert to IAM
+        # Upload cert to IAM
         response = client.upload_server_certificate(
             Path="/cloudfront/letsencrypt/",
             ServerCertificateName=name + '-new',
