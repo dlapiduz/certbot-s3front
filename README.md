@@ -12,6 +12,8 @@ Once you are done you should have a domain pointing to a CloudFront distribution
 that will use an S3 bucket for origin. It is important for the certificate
 validation that both HTTP and HTTPS traffic are enabled (at least while you get
   the certificate).
+  
+You can view an example IAM policy (sample-aws-policy.json) with the permissions needed for this plugin.
 
 ### Setup
 
