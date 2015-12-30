@@ -101,7 +101,7 @@ class Installer(common.Plugin):
         pass  # pragma: no cover
 
     def supported_enhancements(self):  # pylint: disable=missing-docstring,no-self-use
-        pass  # pragma: no cover
+        return []  # pragma: no cover
 
     def get_all_certs_keys(self):  # pylint: disable=missing-docstring,no-self-use
         pass  # pragma: no cover
