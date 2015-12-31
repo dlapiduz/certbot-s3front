@@ -67,6 +67,14 @@ class Installer(common.Plugin):
         # Update CloudFront config to use the new one
         cf_cfg = cf_client.get_distribution_config(Id=self.conf('cf-distribution-id'))
         cf_cfg['DistributionConfig']['ViewerCertificate']['IAMCertificateId'] = cert_id
+        cf_cfg['DistributionConfig']['ViewerCertificate']['Certificate'] = cert_id
+        cf_cfg['DistributionConfig']['ViewerCertificate']['CertificateSource'] = 'iam'
+
+        # Set the default mode to SNI-only to avoid surprise charges
+        if 'SSLSupportMethod' not in cf_cfg['DistributionConfig']['ViewerCertificate']:
+            cf_cfg['DistributionConfig']['ViewerCertificate']['SSLSupportMethod'] = 'sni-only'
+            cf_cfg['DistributionConfig']['ViewerCertificate']['MinimumProtocolVersion'] = 'TLSv1'
+
         try:
             cf_cfg['DistributionConfig']['ViewerCertificate'].pop('CloudFrontDefaultCertificate')
         except KeyError:
