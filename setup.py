@@ -3,11 +3,11 @@ import sys
 from distutils.core import setup
 from setuptools import find_packages
 
-version = '0.1.2'
+version = '0.1.3'
 
 install_requires = [
-    'acme>={0}'.format(version),
-    'letsencrypt>={0}'.format(version),
+    'acme>=0.1.1',
+    'letsencrypt>=0.1.1',
     'PyOpenSSL',
     'pyparsing>=1.5.5',  # Python3 support; perhaps unnecessary?
     'setuptools',  # pkg_resources
