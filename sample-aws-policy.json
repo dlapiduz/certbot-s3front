@@ -1,6 +1,5 @@
 {
     "Version": "2012-10-17",
-    "Id": "letsencrypt-s3front sample policy",
     "Statement": [
         {
             "Effect": "Allow",
