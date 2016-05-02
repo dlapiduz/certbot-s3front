@@ -8,12 +8,11 @@ an AWS CloudFront distribution of an S3 bucket.
 Follow a guide like this one [https://docs.aws.amazon.com/gettingstarted/latest/swh/website-hosting-intro.html](https://docs.aws.amazon.com/gettingstarted/latest/swh/website-hosting-intro.html)
 to use S3 and CloudFront for static site hosting.
 
-Once you are done you should have a domain pointing to a CloudFront distribution
-that will use an S3 bucket for origin. It is important for the certificate
-validation that both HTTP and HTTPS traffic are enabled (at least while you get
-  the certificate).
-  
-You can view an example IAM policy (sample-aws-policy.json) with the permissions needed for this plugin.
+Once you are done you should have:
+
+- A domain pointing to a CloudFront distribution that will use an S3 bucket for origin.
+- Both HTTP and HTTPS traffic are enabled in the CloudFront Distrubtion. This is important for certificate validation, at least while you get your certificate.
+- An IAM policy with the permissions needed for this plugin. A [sample policy](sample-aws-policy.json) has been provided.
 
 ### Setup
 
