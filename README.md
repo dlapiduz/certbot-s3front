@@ -32,14 +32,14 @@ Once you are done you should have:
 
 To generate a certificate and install it in a CloudFront distribution:
 ```
-AWS_ACCESS_KEY_ID="your_key" \
-AWS_SECRET_ACCESS_KEY="your_secret" \
+AWS_ACCESS_KEY_ID="REPLACE_WITH_YOUR_KEY" \
+AWS_SECRET_ACCESS_KEY="REPLACE_WITH_YOUR_SECRET" \
 letsencrypt --agree-tos -a letsencrypt-s3front:auth \
---letsencrypt-s3front:auth-s3-bucket the_bucket \
-[ --letsencrypt-s3front:auth-s3-region your-bucket-region-name ] (default is us-east-1) \
+--letsencrypt-s3front:auth-s3-bucket REPLACE_WITH_YOUR_BUCKET_NAME \
+[ --letsencrypt-s3front:auth-s3-region REPLACE-WITH-YOUR-BUCKET-REGION ] (the default is us-east-1, unless you want to set it to something else, you can delete this line) \
 -i letsencrypt-s3front:installer \
---letsencrypt-s3front:installer-cf-distribution-id your_cf_distribution_id \
--d the_domain
+--letsencrypt-s3front:installer-cf-distribution-id REPLACE_WITH_YOUR_CF_DISTRIBUTION_ID \
+-d REPLACE_WITH_YOUR_DOMAIN
 ```
 
 Follow the screen prompts and you should end up with the certificate in your
