@@ -45,4 +45,27 @@ letsencrypt --agree-tos -a letsencrypt-s3front:auth \
 Follow the screen prompts and you should end up with the certificate in your
 distribution. It may take a couple minutes to update.
 
-To automate the renewal process without prompts (for example, with a monthly cron), you can add the letsencrypt parameters --renew-by-default --text
+#### How to use it with virtualenv
+
+If you've created a [virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/) to use while installing `letsencrypt` then you'll get a permission denied error while running the above command.
+
+One way to fix this is to run the command with `sudo` so it has permission to create the folders the certs are written into before uploading.
+
+You'll also need to specify the path to `letsencrypt` that's in your virtualenv, something like `/home/your_username/.virtualenvs/letsencrypt/bin/letsencrypt`. 
+
+The command will now look something like this:
+
+```
+sudo AWS_ACCESS_KEY_ID="REPLACE_WITH_YOUR_KEY" \
+AWS_SECRET_ACCESS_KEY="REPLACE_WITH_YOUR_SECRET" \
+REPLACE_WITH_PATH_TO_YOUR_LETSENCRYPT_IN_THE_VIRTUALENV/letsencrypt --agree-tos -a letsencrypt-s3front:auth \
+--letsencrypt-s3front:auth-s3-bucket REPLACE_WITH_YOUR_BUCKET_NAME \
+--letsencrypt-s3front:auth-s3-region REPLACE-WITH-YOUR-BUCKET-REGION \
+-i letsencrypt-s3front:installer \
+--letsencrypt-s3front:installer-cf-distribution-id REPLACE_WITH_YOUR_CF_DISTRIBUTION_ID \
+-d REPLACE_WITH_YOUR_DOMAIN
+```
+
+### Automate renewal
+
+To automate the renewal process without prompts (for example, with a monthly cron), you can add the letsencrypt parameters `--renew-by-default --text`
