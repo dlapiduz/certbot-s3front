@@ -14,6 +14,8 @@ Once you are done you should have:
 - Both HTTP and HTTPS traffic are enabled in the CloudFront Distrubtion. This is important for certificate validation, at least while you get your certificate.
 - An IAM policy with the permissions needed for this plugin. A [sample policy](sample-aws-policy.json) has been provided.
 
+Note: If you're setting up both an apex and a `www.` domain, they'll have a respective S3 bucket each. You'll need to update the IAM policy to include access to both buckets. 
+
 ### Setup
 
 1. Install the letsencrypt client [https://letsencrypt.readthedocs.org/en/latest/using.html#installation](https://letsencrypt.readthedocs.org/en/latest/using.html#installation)
