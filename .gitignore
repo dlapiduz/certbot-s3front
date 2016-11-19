@@ -6,7 +6,7 @@ dist*/
 /venv*/
 /kgs/
 /.tox/
-letsencrypt.log
+certbot.log
 
 # coverage
 .coverage

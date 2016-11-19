@@ -13,9 +13,9 @@ import botocore
 
 from acme import challenges
 
-from letsencrypt import errors
-from letsencrypt import interfaces
-from letsencrypt.plugins import common
+from certbot import errors
+from certbot import interfaces
+from certbot.plugins import common
 
 
 logger = logging.getLogger(__name__)

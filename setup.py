@@ -7,9 +7,8 @@ version = '0.1.3'
 
 install_requires = [
     'acme>=0.1.1',
-    'letsencrypt>=0.1.1',
+    'certbot>=0.9.3',
     'PyOpenSSL',
-    'pyparsing>=1.5.5',  # Python3 support; perhaps unnecessary?
     'setuptools',  # pkg_resources
     'zope.interface',
     'boto3'
