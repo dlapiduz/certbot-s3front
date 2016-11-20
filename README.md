@@ -18,12 +18,21 @@ Note: If you're setting up both an apex and a `www.` domain, they'll have a resp
 
 ### Setup
 
-1. Install the certbot client followin the instructions here [https://certbot.eff.org/](https://certbot.eff.org/)
-1. Install the certbot-s3front plugin
+
+The easiest way to install both the certbot client and the certbot-s3front plugin is:
 
   ```
   pip install certbot-s3front
   ```
+
+  If you are in Mac OS you will need a local set up for Python and we recommend a [virtual environment](http://docs.python-guide.org/en/latest/dev/virtualenvs/).
+  You might also need to install `dialog`: `brew install dialog`.
+
+  If you are in Ubuntu you will need to install `pip` and other libraries:
+  ```
+  apt-get install python-pip python-dev libffi-dev libssl-dev libxml2-dev libxslt1-dev libjpeg8-dev zlib1g-dev dialog
+  ```
+  And then run `pip install certbot-s3front`.
 
 ### How to use it
 
