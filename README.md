@@ -1,6 +1,6 @@
-## S3/CloudFront plugin for Let's Encrypt client
+## S3/CloudFront plugin for [Certbot](https://certbot.eff.org/) client
 
-Use the letsencrypt client to generate and install a certificate to be used with
+Use the certbot client to generate and install a certificate to be used with
 an AWS CloudFront distribution of an S3 bucket.
 
 ### Before you start
@@ -18,57 +18,33 @@ Note: If you're setting up both an apex and a `www.` domain, they'll have a resp
 
 ### Setup
 
-1. Install the letsencrypt client [https://letsencrypt.readthedocs.org/en/latest/using.html#installation](https://letsencrypt.readthedocs.org/en/latest/using.html#installation)
+1. Install the certbot client followin the instructions here [https://certbot.eff.org/](https://certbot.eff.org/)
+1. Install the certbot-s3front plugin
 
   ```
-  pip install letsencrypt
-  ```
-
-1. Install the letsencrypt-s3front plugin
-
-  ```
-  pip install letsencrypt-s3front
+  pip install certbot-s3front
   ```
 
 ### How to use it
 
 To generate a certificate and install it in a CloudFront distribution:
-```
+
+```bash
 AWS_ACCESS_KEY_ID="REPLACE_WITH_YOUR_KEY" \
 AWS_SECRET_ACCESS_KEY="REPLACE_WITH_YOUR_SECRET" \
-letsencrypt --agree-tos -a letsencrypt-s3front:auth \
---letsencrypt-s3front:auth-s3-bucket REPLACE_WITH_YOUR_BUCKET_NAME \
-[ --letsencrypt-s3front:auth-s3-region your-bucket-region-name ] #(the default is us-east-1, unless you want to set it to something else, you can delete this line) \
-[ --letsencrypt-s3front:auth-s3-directory your-bucket-directory ] # (default is root) \
--i letsencrypt-s3front:installer \
---letsencrypt-s3front:installer-cf-distribution-id REPLACE_WITH_YOUR_CF_DISTRIBUTION_ID \
+certbot --agree-tos -a certbot-s3front:auth \
+--certbot-s3front:auth-s3-bucket REPLACE_WITH_YOUR_BUCKET_NAME \
+[ --certbot-s3front:auth-s3-region your-bucket-region-name ] #(the default is us-east-1, unless you want to set it to something else, you can delete this line) \
+[ --certbot-s3front:auth-s3-directory your-bucket-directory ] # (default is "") \
+-i certbot-s3front:installer \
+--certbot-s3front:installer-cf-distribution-id REPLACE_WITH_YOUR_CF_DISTRIBUTION_ID \
 -d REPLACE_WITH_YOUR_DOMAIN
 ```
 
 Follow the screen prompts and you should end up with the certificate in your
 distribution. It may take a couple minutes to update.
 
-#### How to use it with virtualenv
-
-If you've created a [virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/) to use while installing `letsencrypt` then you'll get a permission denied error while running the above command.
-
-One way to fix this is to run the command with `sudo` so it has permission to create the folders the certs are written into before uploading.
-
-You'll also need to specify the path to `letsencrypt` that's in your virtualenv, something like `/home/your_username/.virtualenvs/letsencrypt/bin/letsencrypt`.
-
-The command will now look something like this:
-
-```
-sudo AWS_ACCESS_KEY_ID="REPLACE_WITH_YOUR_KEY" \
-AWS_SECRET_ACCESS_KEY="REPLACE_WITH_YOUR_SECRET" \
-REPLACE_WITH_PATH_TO_YOUR_LETSENCRYPT_IN_THE_VIRTUALENV/letsencrypt --agree-tos -a letsencrypt-s3front:auth \
---letsencrypt-s3front:auth-s3-bucket REPLACE_WITH_YOUR_BUCKET_NAME \
---letsencrypt-s3front:auth-s3-region REPLACE-WITH-YOUR-BUCKET-REGION \
--i letsencrypt-s3front:installer \
---letsencrypt-s3front:installer-cf-distribution-id REPLACE_WITH_YOUR_CF_DISTRIBUTION_ID \
--d REPLACE_WITH_YOUR_DOMAIN
-```
 
 ### Automate renewal
 
-To automate the renewal process without prompts (for example, with a monthly cron), you can add the letsencrypt parameters `--renew-by-default --text`
+To automate the renewal process without prompts (for example, with a monthly cron), you can add the certbot parameters `--renew-by-default --text`
