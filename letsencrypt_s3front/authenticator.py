@@ -30,6 +30,8 @@ class Authenticator(common.Plugin):
             help="Bucket referenced by CloudFront distribution")
         add("s3-region", default="us-east-1",
             help="Bucket region name")
+        add("s3-directory",
+            help="A directory of the S3 bucket/the distribution's origin path")
 
     def __init__(self, *args, **kwargs):
         super(Authenticator, self).__init__(*args, **kwargs)
@@ -45,6 +47,11 @@ class Authenticator(common.Plugin):
         # pylint: disable=missing-docstring,no-self-use,unused-argument
         return [challenges.HTTP01]
 
+    def _get_key(self, achall):   # pylint: disable=missing-docstring
+        key = achall.chall.path[1:]
+        s3_dir = self.conf('s3-directory')
+        return '{0}/{1}'.format(s3_dir, key) if s3_dir else key
+
     def perform(self, achalls):  # pylint: disable=missing-docstring
         responses = []
         for achall in achalls:
@@ -57,7 +64,7 @@ class Authenticator(common.Plugin):
         response, validation = achall.response_and_validation()
         s3 = boto3.resource('s3', region_name=self.conf('s3-region'))
 
-        s3.Bucket(self.conf('s3-bucket')).put_object(Key=achall.chall.path[1:],
+        s3.Bucket(self.conf('s3-bucket')).put_object(Key=self._get_key(achall),
                                                      Body=validation,
                                                      ACL='public-read')
 
@@ -75,5 +82,6 @@ class Authenticator(common.Plugin):
         s3 = boto3.resource('s3', region_name=self.conf('s3-region'))
         client = s3.meta.client
         for achall in achalls:
-            client.delete_object(Bucket=self.conf('s3-bucket'), Key=achall.chall.path[1:])
+            client.delete_object(Bucket=self.conf('s3-bucket'),
+                                 Key=self._get_key(achall))
         return None

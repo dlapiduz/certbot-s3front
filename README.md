@@ -14,7 +14,7 @@ Once you are done you should have:
 - Both HTTP and HTTPS traffic are enabled in the CloudFront Distrubtion. This is important for certificate validation, at least while you get your certificate.
 - An IAM policy with the permissions needed for this plugin. A [sample policy](sample-aws-policy.json) has been provided.
 
-Note: If you're setting up both an apex and a `www.` domain, they'll have a respective S3 bucket each. You'll need to update the IAM policy to include access to both buckets. 
+Note: If you're setting up both an apex and a `www.` domain, they'll have a respective S3 bucket each. You'll need to update the IAM policy to include access to both buckets.
 
 ### Setup
 
@@ -38,7 +38,8 @@ AWS_ACCESS_KEY_ID="REPLACE_WITH_YOUR_KEY" \
 AWS_SECRET_ACCESS_KEY="REPLACE_WITH_YOUR_SECRET" \
 letsencrypt --agree-tos -a letsencrypt-s3front:auth \
 --letsencrypt-s3front:auth-s3-bucket REPLACE_WITH_YOUR_BUCKET_NAME \
-[ --letsencrypt-s3front:auth-s3-region REPLACE-WITH-YOUR-BUCKET-REGION ] (the default is us-east-1, unless you want to set it to something else, you can delete this line) \
+[ --letsencrypt-s3front:auth-s3-region your-bucket-region-name ] #(the default is us-east-1, unless you want to set it to something else, you can delete this line) \
+[ --letsencrypt-s3front:auth-s3-directory your-bucket-directory ] # (default is root) \
 -i letsencrypt-s3front:installer \
 --letsencrypt-s3front:installer-cf-distribution-id REPLACE_WITH_YOUR_CF_DISTRIBUTION_ID \
 -d REPLACE_WITH_YOUR_DOMAIN
@@ -53,7 +54,7 @@ If you've created a [virtualenv](http://docs.python-guide.org/en/latest/dev/virt
 
 One way to fix this is to run the command with `sudo` so it has permission to create the folders the certs are written into before uploading.
 
-You'll also need to specify the path to `letsencrypt` that's in your virtualenv, something like `/home/your_username/.virtualenvs/letsencrypt/bin/letsencrypt`. 
+You'll also need to specify the path to `letsencrypt` that's in your virtualenv, something like `/home/your_username/.virtualenvs/letsencrypt/bin/letsencrypt`.
 
 The command will now look something like this:
 
