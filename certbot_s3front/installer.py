@@ -5,8 +5,6 @@ from __future__ import print_function
 import os
 import sys
 import logging
-import re
-import subprocess
 
 import zope.component
 import zope.interface
@@ -14,9 +12,6 @@ import zope.interface
 import boto3
 import botocore
 
-from acme import challenges
-
-from certbot import errors
 from certbot import interfaces
 from certbot.plugins import common
 
