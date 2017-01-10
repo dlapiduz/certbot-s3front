@@ -54,8 +54,8 @@ class Installer(common.Plugin):
         if self.config.rsa_key_size > 2048:
             print(
                 "The maximum public key size allowed for Cloudfront is 2048 ("
-                "http://docs.aws.amazon.com/AmazonCloudFront/latest"
-                "/DeveloperGuide/SecureConnections.html)\n"
+                "https://docs.aws.amazon.com/AmazonCloudFront/latest"
+                "/DeveloperGuide/cnames-and-https-requirements.html)\n"
                 "Please, use --rsa_key_size 2048 or edit your cli.ini")
             sys.exit(1)
         client = boto3.client('iam')
