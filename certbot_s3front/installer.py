@@ -1,9 +1,10 @@
 """S3/CloudFront Let's Encrypt installer plugin."""
+
+from __future__ import print_function
+
 import os
 import sys
 import logging
-import re
-import subprocess
 
 import zope.component
 import zope.interface
@@ -11,9 +12,6 @@ import zope.interface
 import boto3
 import botocore
 
-from acme import challenges
-
-from certbot import errors
 from certbot import interfaces
 from certbot.plugins import common
 
@@ -49,7 +47,11 @@ class Installer(common.Plugin):
         Upload Certificate to IAM and assign it to the CloudFront distribution
         """
         if self.config.rsa_key_size > 2048:
-            print "The maximum public key size allowed for Cloudfront is 2048 (http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/SecureConnections.html)\n Please, use --rsa_key_size 2048 or edit your cli.ini"
+            print(
+                "The maximum public key size allowed for Cloudfront is 2048 ("
+                "https://docs.aws.amazon.com/AmazonCloudFront/latest"
+                "/DeveloperGuide/cnames-and-https-requirements.html)\n"
+                "Please, use --rsa_key_size 2048 or edit your cli.ini")
             sys.exit(1)
         client = boto3.client('iam')
         cf_client = boto3.client('cloudfront')
