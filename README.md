@@ -35,7 +35,7 @@ The easiest way to install both the certbot client and the certbot-s3front plugi
   Then use the full path to the `pip` binary found in the same folder to install certbot-s3front.
   Note, you will need to re-install the plugin each time Homebrew will update certbot
 
-  #### Mac with pip certbot?
+#### Mac with pip certbot?
   Alternatively, you can have a local set up for Python and we recommend a [virtual environment](http://docs.python-guide.org/en/latest/dev/virtualenvs/) and have both certbot and certbot-s3front installed via pip.
   You might also need to install `dialog`: `brew install dialog`.
 
