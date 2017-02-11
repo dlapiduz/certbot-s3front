@@ -25,7 +25,7 @@ The easiest way to install both the certbot client and the certbot-s3front plugi
   pip install certbot-s3front
   ```
 
-  #### Mac with Homebrew certbot?
+#### Mac with Homebrew certbot?
   Installed certbot certbot using Homebrew on Mac (as the official way to install on a Mac)? Find the full path to its python binary using this command:
 
   ```bash
@@ -39,7 +39,7 @@ The easiest way to install both the certbot client and the certbot-s3front plugi
   Alternatively, you can have a local set up for Python and we recommend a [virtual environment](http://docs.python-guide.org/en/latest/dev/virtualenvs/) and have both certbot and certbot-s3front installed via pip.
   You might also need to install `dialog`: `brew install dialog`.
 
-  #### Ubuntu?
+#### Ubuntu?
   If you are in Ubuntu you will need to install `pip` and other libraries first:
   ```
   apt-get install python-pip python-dev libffi-dev libssl-dev libxml2-dev libxslt1-dev libjpeg8-dev zlib1g-dev dialog
