@@ -65,6 +65,13 @@ certbot --agree-tos -a certbot-s3front:auth \
 Follow the screen prompts and you should end up with the certificate in your
 distribution. It may take a couple minutes to update.
 
+### Renewal
+
+To renew a certificate, you need to specify the certificate name and the corresponding bucket:
+
+```bash
+certbot renew --cert-name REPLACE_WITH_YOUR_DOMAIN --certbot-s3front:auth-s3-bucket REPLACE_WITH_YOUR_DOMAIN
+```
 
 ### Automate renewal
 
