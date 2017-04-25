@@ -60,6 +60,21 @@ class Installer(common.Plugin):
         body = open(cert_path).read()
         key = open(key_path).read()
         chain = open(chain_path).read()
+        
+        # Delete old cert
+        try:
+            client.delete_server_certificate(
+                ServerCertificateName=name
+            )
+        except botocore.exceptions.ClientError as e:
+            logger.error(e)
+
+        # Rename cert to the new one
+        client.update_server_certificate(
+            ServerCertificateName=name + '-new',
+            NewServerCertificateName=name
+        )
+        
         # Upload cert to IAM
         response = client.upload_server_certificate(
             Path="/cloudfront/letsencrypt/",
@@ -87,20 +102,6 @@ class Installer(common.Plugin):
         response = cf_client.update_distribution(DistributionConfig=cf_cfg['DistributionConfig'],
                                                  Id=self.conf('cf-distribution-id'),
                                                  IfMatch=cf_cfg['ETag'])
-
-        # Delete old cert
-        try:
-            client.delete_server_certificate(
-                ServerCertificateName=name
-            )
-        except botocore.exceptions.ClientError as e:
-            logger.error(e)
-
-        # Rename cert to the new one
-        client.update_server_certificate(
-            ServerCertificateName=name + '-new',
-            NewServerCertificateName=name
-        )
 
     def enhance(self, domain, enhancement, options=None):  # pylint: disable=missing-docstring,no-self-use
         pass  # pragma: no cover
