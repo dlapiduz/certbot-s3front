@@ -31,6 +31,7 @@ class Installer(common.Plugin):
 
     def __init__(self, *args, **kwargs):
         super(Installer, self).__init__(*args, **kwargs)
+        self.already_deployed = []
 
 
     def prepare(self):  # pylint: disable=missing-docstring,no-self-use
@@ -46,6 +47,15 @@ class Installer(common.Plugin):
         """
         Upload Certificate to IAM and assign it to the CloudFront distribution
         """
+        
+        # Prevent a cert from being installed more than once in same run
+        # e.g. When a cert covers multiple domains but used in only one CF distribution
+        if cert_path in self.already_deployed:
+            print("Skipping {} as already installed under alias domain".format(domain))
+            return
+        else:
+            self.already_deployed.append(cert_path)
+        
         if self.config.rsa_key_size > 2048:
             print(
                 "The maximum public key size allowed for Cloudfront is 2048 ("
