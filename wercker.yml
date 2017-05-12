@@ -1,0 +1,22 @@
+box: python:2.7
+build:
+  steps:
+    - virtualenv:
+        name: setup virtual environment
+        install_wheel: true
+
+    - script:
+        name: echo python information
+        code: |
+          echo "python version $(python --version) running"
+          echo "pip version $(pip --version) running"
+    - script:
+        name: Try to install package
+        code: |
+          python setup.py install
+
+deploy:
+  steps:
+    - script:
+        name: pypi deploy
+        code: ./ci/deploy.sh
