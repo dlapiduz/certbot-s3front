@@ -5,6 +5,7 @@ from __future__ import print_function
 import os
 import sys
 import logging
+import time
 
 import zope.component
 import zope.interface
@@ -37,7 +38,7 @@ class Installer(common.Plugin):
         pass  # pragma: no cover
 
     def more_info(self):  # pylint: disable=missing-docstring,no-self-use
-        return ("")
+        return ""
 
     def get_all_names(self):  # pylint: disable=missing-docstring,no-self-use
         pass  # pragma: no cover
@@ -60,10 +61,13 @@ class Installer(common.Plugin):
         body = open(cert_path).read()
         key = open(key_path).read()
         chain = open(chain_path).read()
+
+        suffix = "-%i" % int(time.time())
+
         # Upload cert to IAM
         response = client.upload_server_certificate(
             Path="/cloudfront/letsencrypt/",
-            ServerCertificateName=name + '-new',
+            ServerCertificateName=name + suffix,
             CertificateBody=body,
             PrivateKey=key,
             CertificateChain=chain
@@ -84,23 +88,28 @@ class Installer(common.Plugin):
             cf_cfg['DistributionConfig']['ViewerCertificate'].pop('CloudFrontDefaultCertificate')
         except KeyError:
             pass
+        try:
+            cf_cfg['DistributionConfig']['ViewerCertificate'].pop('ACMCertificateArn')
+        except KeyError:
+            pass
         response = cf_client.update_distribution(DistributionConfig=cf_cfg['DistributionConfig'],
                                                  Id=self.conf('cf-distribution-id'),
                                                  IfMatch=cf_cfg['ETag'])
 
-        # Delete old cert
-        try:
-            client.delete_server_certificate(
-                ServerCertificateName=name
-            )
-        except botocore.exceptions.ClientError as e:
-            logger.error(e)
-
-        # Rename cert to the new one
-        client.update_server_certificate(
-            ServerCertificateName=name + '-new',
-            NewServerCertificateName=name
+        # Delete old certs
+        certificates = client.list_server_certificates(
+            PathPrefix="/cloudfront/letsencrypt/"
         )
+        for cert in certificates['ServerCertificateMetadataList']:
+            if (name in cert['ServerCertificateName'] and
+                    cert['ServerCertificateName'] != name + suffix):
+                try:
+                    client.delete_server_certificate(
+                        ServerCertificateName=cert['ServerCertificateName']
+                    )
+                except botocore.exceptions.ClientError as e:
+                    logger.error(e)
+
 
     def enhance(self, domain, enhancement, options=None):  # pylint: disable=missing-docstring,no-self-use
         pass  # pragma: no cover
