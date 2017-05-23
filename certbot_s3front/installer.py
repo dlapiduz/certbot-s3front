@@ -7,7 +7,6 @@ import sys
 import logging
 import time
 
-import zope.component
 import zope.interface
 
 import boto3

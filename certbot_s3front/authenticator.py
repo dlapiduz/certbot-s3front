@@ -4,7 +4,6 @@ import logging
 import re
 import subprocess
 
-import zope.component
 import zope.interface
 
 import boto3
