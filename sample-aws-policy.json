@@ -6,7 +6,8 @@
             "Action": [
                 "iam:UploadServerCertificate",
                 "iam:UpdateServerCertificate",
-                "iam:DeleteServerCertificate"
+                "iam:DeleteServerCertificate",
+		"iam:ListServerCertificates"
             ],
             "Resource": [
                 "*"
