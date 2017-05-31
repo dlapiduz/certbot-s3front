@@ -7,7 +7,7 @@
                 "iam:UploadServerCertificate",
                 "iam:UpdateServerCertificate",
                 "iam:DeleteServerCertificate",
-		"iam:ListServerCertificates"
+                "iam:ListServerCertificates"
             ],
             "Resource": [
                 "*"
