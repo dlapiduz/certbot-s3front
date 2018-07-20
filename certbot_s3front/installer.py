@@ -18,10 +18,10 @@ from certbot.plugins import common
 
 logger = logging.getLogger(__name__)
 
-class Installer(common.Plugin):
-    zope.interface.implements(interfaces.IInstaller)
-    zope.interface.classProvides(interfaces.IPluginFactory)
 
+@zope.interface.implementer(interfaces.IInstaller)
+@zope.interface.provider(interfaces.IPluginFactory)
+class Installer(common.Plugin):
     description = "S3/CloudFront Installer"
 
     @classmethod

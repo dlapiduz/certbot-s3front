@@ -17,10 +17,10 @@ from certbot.plugins import common
 
 logger = logging.getLogger(__name__)
 
-class Authenticator(common.Plugin):
-    zope.interface.implements(interfaces.IAuthenticator)
-    zope.interface.classProvides(interfaces.IPluginFactory)
 
+@zope.interface.implementer(interfaces.IAuthenticator)
+@zope.interface.provider(interfaces.IPluginFactory)
+class Authenticator(common.Plugin):
     description = "S3/CloudFront Authenticator"
 
     @classmethod
