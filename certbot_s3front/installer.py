@@ -30,6 +30,8 @@ class Installer(common.Plugin):
             help="CloudFront distribution id")
 
     def __init__(self, *args, **kwargs):
+        self.certificate_main_domain = None
+        self.certificate_id = None
         super(Installer, self).__init__(*args, **kwargs)
 
 
@@ -44,17 +46,21 @@ class Installer(common.Plugin):
 
     def deploy_cert(self, domain, cert_path, key_path, chain_path, fullchain_path):
         """
-        Upload Certificate to IAM and assign it to the CloudFront distribution
+        Upload Certificate to IAM
         """
+
+        # Only install a certificate once
+        if self.certificate_id is not None:
+            return
+
         if self.config.rsa_key_size > 2048:
-            print(
+            logger.error(
                 "The maximum public key size allowed for Cloudfront is 2048 ("
                 "https://docs.aws.amazon.com/AmazonCloudFront/latest"
                 "/DeveloperGuide/cnames-and-https-requirements.html)\n"
                 "Please, use --rsa_key_size 2048 or edit your cli.ini")
             sys.exit(1)
         client = boto3.client('iam')
-        cf_client = boto3.client('cloudfront')
 
         name = "le-%s" % domain
         body = open(cert_path).read()
@@ -71,11 +77,40 @@ class Installer(common.Plugin):
             PrivateKey=key,
             CertificateChain=chain
         )
-        cert_id = response['ServerCertificateMetadata']['ServerCertificateId']
+
+        self.certificate_id = response['ServerCertificateMetadata']['ServerCertificateId']
+        self.certificate_main_domain = domain
+
+    def enhance(self, domain, enhancement, options=None):  # pylint: disable=missing-docstring,no-self-use
+        pass  # pragma: no cover
+
+    def supported_enhancements(self):  # pylint: disable=missing-docstring,no-self-use
+        return []  # pragma: no cover
+
+    def get_all_certs_keys(self):  # pylint: disable=missing-docstring,no-self-use
+        pass  # pragma: no cover
+
+    def save(self, title=None, temporary=False):  # pylint: disable=no-self-use
+        """
+        Save the Cloudfront config if needed
+        """
+
+        if self.certificate_id is None:
+            # Nothing to save
+            return
+
+        client = boto3.client('iam')
+        cf_client = boto3.client('cloudfront')
+
         # Update CloudFront config to use the new one
         cf_cfg = cf_client.get_distribution_config(Id=self.conf('cf-distribution-id'))
-        cf_cfg['DistributionConfig']['ViewerCertificate']['IAMCertificateId'] = cert_id
-        cf_cfg['DistributionConfig']['ViewerCertificate']['Certificate'] = cert_id
+
+        # If we already have the right certificate, then don't change the config.
+        if cf_cfg['DistributionConfig']['ViewerCertificate']['IAMCertificateId'] == self.certificate_id:
+            return
+
+        cf_cfg['DistributionConfig']['ViewerCertificate']['IAMCertificateId'] = self.certificate_id
+        cf_cfg['DistributionConfig']['ViewerCertificate']['Certificate'] = self.certificate_id
         cf_cfg['DistributionConfig']['ViewerCertificate']['CertificateSource'] = 'iam'
 
         # Set the default mode to SNI-only to avoid surprise charges
@@ -94,14 +129,15 @@ class Installer(common.Plugin):
         response = cf_client.update_distribution(DistributionConfig=cf_cfg['DistributionConfig'],
                                                  Id=self.conf('cf-distribution-id'),
                                                  IfMatch=cf_cfg['ETag'])
+        # TODO check response
 
         # Delete old certs
         certificates = client.list_server_certificates(
             PathPrefix="/cloudfront/letsencrypt/"
         )
         for cert in certificates['ServerCertificateMetadataList']:
-            if (name in cert['ServerCertificateName'] and
-                    cert['ServerCertificateName'] != name + suffix):
+            if (self.certificate_main_domain in cert['ServerCertificateName'] and
+                    cert['ServerCertificateId'] != self.certificate_id:
                 try:
                     client.delete_server_certificate(
                         ServerCertificateName=cert['ServerCertificateName']
@@ -109,18 +145,6 @@ class Installer(common.Plugin):
                 except botocore.exceptions.ClientError as e:
                     logger.error(e)
 
-
-    def enhance(self, domain, enhancement, options=None):  # pylint: disable=missing-docstring,no-self-use
-        pass  # pragma: no cover
-
-    def supported_enhancements(self):  # pylint: disable=missing-docstring,no-self-use
-        return []  # pragma: no cover
-
-    def get_all_certs_keys(self):  # pylint: disable=missing-docstring,no-self-use
-        pass  # pragma: no cover
-
-    def save(self, title=None, temporary=False):  # pylint: disable=missing-docstring,no-self-use
-        pass  # pragma: no cover
 
     def rollback_checkpoints(self, rollback=1):  # pylint: disable=missing-docstring,no-self-use
         pass  # pragma: no cover
@@ -136,3 +160,15 @@ class Installer(common.Plugin):
 
     def restart(self):  # pylint: disable=missing-docstring,no-self-use
         pass  # pragma: no cover
+
+    def renew_deploy(self, lineage, *args, **kwargs): # pylint: disable=missing-docstring,no-self-use
+        """
+        Renew certificates when calling `certbot renew`
+        """
+
+        # Run deploy_cert with the lineage params
+        self.deploy_cert(lineage.names()[0], lineage.cert_path, lineage.key_path, lineage.chain_path, lineage.fullchain_path)
+
+        return
+
+interfaces.RenewDeployer.register(Installer)
