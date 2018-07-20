@@ -81,7 +81,7 @@ class Installer(common.Plugin):
         # Set the default mode to SNI-only to avoid surprise charges
         if 'SSLSupportMethod' not in cf_cfg['DistributionConfig']['ViewerCertificate']:
             cf_cfg['DistributionConfig']['ViewerCertificate']['SSLSupportMethod'] = 'sni-only'
-            cf_cfg['DistributionConfig']['ViewerCertificate']['MinimumProtocolVersion'] = 'TLSv1'
+            cf_cfg['DistributionConfig']['ViewerCertificate']['MinimumProtocolVersion'] = 'TLSv1.2_2018'
 
         try:
             cf_cfg['DistributionConfig']['ViewerCertificate'].pop('CloudFrontDefaultCertificate')
