@@ -137,7 +137,7 @@ class Installer(common.Plugin):
         )
         for cert in certificates['ServerCertificateMetadataList']:
             if (self.certificate_main_domain in cert['ServerCertificateName'] and
-                    cert['ServerCertificateId'] != self.certificate_id:
+                    cert['ServerCertificateId'] != self.certificate_id):
                 try:
                     client.delete_server_certificate(
                         ServerCertificateName=cert['ServerCertificateName']
