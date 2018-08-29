@@ -106,7 +106,8 @@ class Installer(common.Plugin):
         cf_cfg = cf_client.get_distribution_config(Id=self.conf('cf-distribution-id'))
 
         # If we already have the right certificate, then don't change the config.
-        if cf_cfg['DistributionConfig']['ViewerCertificate']['IAMCertificateId'] == self.certificate_id:
+        if ('IAMCertificateId' in cf_cfg['DistributionConfig']['ViewerCertificate'] and
+                cf_cfg['DistributionConfig']['ViewerCertificate']['IAMCertificateId'] == self.certificate_id):
             return
 
         cf_cfg['DistributionConfig']['ViewerCertificate']['IAMCertificateId'] = self.certificate_id
