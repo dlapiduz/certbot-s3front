@@ -45,3 +45,12 @@ jobs:
 
   - script: python setup.py sdist
     displayName: 'Build sdist'
+  
+  - script: 'pip install twine'
+    displayName: 'Install twine'
+
+  - task: TwineAuthenticate@0
+    inputs:
+      artifactFeeds: 'pypi'
+
+  - script: 'twine register dist/*.tar.gz && twine upload dist/*'
