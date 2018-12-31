@@ -32,17 +32,6 @@ jobs:
   - script: python -m pip install --upgrade pip && python setup.py install
     displayName: 'Install dependencies'
 
-  - script: |
-      pip install pytest
-      pytest tests --doctest-modules --junitxml=junit/test-results.xml
-    displayName: 'pytest'
-
-  - task: PublishTestResults@2
-    inputs:
-      testResultsFiles: '**/test-results.xml'
-      testRunTitle: 'Python $(python.version)'
-    condition: succeededOrFailed()
-
 - job: 'Publish'
   dependsOn: 'Test'
   pool:
