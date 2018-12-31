@@ -53,4 +53,5 @@ jobs:
     inputs:
       artifactFeeds: 'pypi'
 
-  - script: 'twine register dist/*.tar.gz && twine upload dist/*'
+  - script: 'twine register dist/*.tar.gz'
+  - script: 'twine upload dist/*'
