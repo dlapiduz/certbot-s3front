@@ -51,7 +51,6 @@ jobs:
 
   - task: TwineAuthenticate@0
     inputs:
-      artifactFeeds: 'pypi'
+      externalFeeds: 'pypi'
 
-  - script: 'twine register dist/*.tar.gz'
-  - script: 'twine upload dist/*'
+  - script: 'twine -r {feedName/EndpointName} --config-file $(PYPIRC_PATH) {package path to publish}'
