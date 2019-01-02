@@ -53,4 +53,4 @@ jobs:
     inputs:
       externalFeeds: 'pypi'
 
-  - script: 'twine -r {feedName/EndpointName} --config-file $(PYPIRC_PATH) {package path to publish}'
+  - script: 'twine upload --config-file $(PYPIRC_PATH) dist/*'
