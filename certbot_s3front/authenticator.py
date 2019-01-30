@@ -29,6 +29,10 @@ class Authenticator(common.Plugin):
             help="Bucket referenced by CloudFront distribution")
         add("s3-region", default="us-east-1",
             help="Bucket region name")
+        add("s3-access-key", default=os.getenv('AWS_ACCESS_KEY_ID'),
+            help="Access key ID")
+        add("s3-secret-key", default=os.getenv('AWS_SECRET_ACCESS_KEY'),
+            help="Secret key ID")
         add("s3-directory",
             help="A directory of the S3 bucket/the distribution's origin path")
 
@@ -61,7 +65,10 @@ class Authenticator(common.Plugin):
         # upload the challenge file to the desired s3 bucket
         # then run simple http verification
         response, validation = achall.response_and_validation()
-        s3 = boto3.resource('s3', region_name=self.conf('s3-region'))
+        session = boto3.Session(
+                aws_access_key_id=self.conf('s3-access-key'),
+                aws_secret_access_key=self.conf('s3-secret-key'))
+        s3 = session.resource('s3', region_name=self.conf('s3-region'))
 
         s3.Bucket(self.conf('s3-bucket')).put_object(Key=self._get_key(achall),
                                                      Body=validation,
@@ -78,7 +85,10 @@ class Authenticator(common.Plugin):
 
     def cleanup(self, achalls):
         # pylint: disable=missing-docstring,no-self-use,unused-argument
-        s3 = boto3.resource('s3', region_name=self.conf('s3-region'))
+        session = boto3.Session(
+                aws_access_key_id=self.conf('s3-access-key'),
+                aws_secret_access_key=self.conf('s3-secret-key'))
+        s3 = session.resource('s3', region_name=self.conf('s3-region'))
         client = s3.meta.client
         for achall in achalls:
             client.delete_object(Bucket=self.conf('s3-bucket'),
