@@ -28,6 +28,10 @@ class Installer(common.Plugin):
     def add_parser_arguments(cls, add):
         add("cf-distribution-id", default=os.getenv('CF_DISTRIBUTION_ID'),
             help="CloudFront distribution id")
+        add("s3-access-key", default=os.getenv('AWS_ACCESS_KEY_ID'),
+            help="Access key ID")
+        add("s3-secret-key", default=os.getenv('AWS_SECRET_ACCESS_KEY'),
+            help="Secret key ID")
 
     def __init__(self, *args, **kwargs):
         self.certificate_main_domain = None
@@ -60,7 +64,9 @@ class Installer(common.Plugin):
                 "/DeveloperGuide/cnames-and-https-requirements.html)\n"
                 "Please, use --rsa_key_size 2048 or edit your cli.ini")
             sys.exit(1)
-        client = boto3.client('iam')
+        client = boto3.client('iam',
+                aws_access_key_id=self.conf('s3-access-key'),
+                aws_secret_access_key=self.conf('s3-secret-key'))
 
         name = "le-%s" % domain
         body = open(cert_path).read()
@@ -99,8 +105,12 @@ class Installer(common.Plugin):
             # Nothing to save
             return
 
-        client = boto3.client('iam')
-        cf_client = boto3.client('cloudfront')
+        client = boto3.client('iam',
+                aws_access_key_id=self.conf('s3-access-key'),
+                aws_secret_access_key=self.conf('s3-secret-key'))
+        cf_client = boto3.client('cloudfront',
+                aws_access_key_id=self.conf('s3-access-key'),
+                aws_secret_access_key=self.conf('s3-secret-key'))
 
         # Update CloudFront config to use the new one
         cf_cfg = cf_client.get_distribution_config(Id=self.conf('cf-distribution-id'))
