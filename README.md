@@ -50,9 +50,9 @@ The easiest way to install both the certbot client and the certbot-s3front plugi
 To generate a certificate and install it in a CloudFront distribution:
 
 ```bash
+AWS_ACCESS_KEY_ID="REPLACE_WITH_YOUR_KEY" \
+AWS_SECRET_ACCESS_KEY="REPLACE_WITH_YOUR_SECRET" \
 certbot --agree-tos -a certbot-s3front:auth \
---certbot-s3front:auth-s3-access-key "REPLACE_WITH_YOUR_KEY" \
---certbot-s3front:auth-s3-secret-key "REPLACE_WITH_YOUR_SECRET" \
 --certbot-s3front:auth-s3-bucket REPLACE_WITH_YOUR_BUCKET_NAME \
 [ --certbot-s3front:auth-s3-region your-bucket-region-name ] #(the default is us-east-1, unless you want to set it to something else, you can delete this line) \
 [ --certbot-s3front:auth-s3-directory your-bucket-directory ] # (default is "") \
