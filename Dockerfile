@@ -1,4 +1,4 @@
-FROM python:2-alpine
+FROM python:3.6-alpine
 ENTRYPOINT [ "certbot" ]
 
 VOLUME /etc/letsencrypt /var/lib/letsencrypt
@@ -6,7 +6,7 @@ WORKDIR /opt/certbot
 
 RUN apk add --no-cache --virtual .certbot-deps \
     libffi \
-    libssl1.0 \
+    libssl1.1 \
     ca-certificates \
     binutils
 

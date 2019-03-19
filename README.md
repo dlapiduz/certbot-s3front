@@ -18,7 +18,6 @@ Note: If you're setting up both an apex and a `www.` domain, they'll have a resp
 
 ### Setup
 
-
 The easiest way to install both the certbot client and the certbot-s3front plugin is:
 
   ```
@@ -68,3 +67,35 @@ distribution. It may take a couple minutes to update.
 ### Automate renewal
 
 To automate the renewal process without prompts (for example, with a monthly cron), you can add the certbot parameters `--renew-by-default --text`
+
+
+### Using with Docker
+
+To build a docker image of `certbot` with the `s3front` plugin, clone this repo and run:
+
+```bash
+docker build . -t certbot-s3front
+```
+
+Then export the environment variables to an `env.list` file:
+
+```bash
+echo AWS_ACCESS_KEY_ID=YOUR_ID >> env.list
+echo AWS_SECRET_ACCESS_KEY=YOUR_KEY >> env.list
+```
+
+And finally run the docker image:
+
+```bash
+docker run --rm --name lets-encrypt -it \
+    -v ./letsencrypt/:/etc/letsencrypt \
+    --env-file env.list \
+    certbot-s3front \
+        --init \
+        --agree-tos \
+        -a certbot-s3front:auth \
+        -i certbot-s3front:installer \
+        --certbot-s3front:auth-s3-bucket <YOUR_AWS_S3_BUCKET> \
+        --certbot-s3front:installer-cf-distribution-id <YOUR_AWS_CLOUDFRONT_DISTRIBUTION_ID> \
+        -d <YOUR_DOMAIN>
+```
