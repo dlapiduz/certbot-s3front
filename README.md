@@ -82,6 +82,10 @@ Then export the environment variables to an `env.list` file:
 ```bash
 echo AWS_ACCESS_KEY_ID=YOUR_ID >> env.list
 echo AWS_SECRET_ACCESS_KEY=YOUR_KEY >> env.list
+echo AWS_S3_BUCKET=YOUR_S3_BUCKET_NAME >> env.list
+echo AWS_DISTRIBUTION_ID=YOUR_DISTRIBUTION_ID >> env.list
+echo DOMAIN=YOUR_DOMAIN >> env.list
+echo EMAIL=YOUR_EMAIL >> env.list
 ```
 
 And finally run the docker image:
@@ -91,11 +95,4 @@ docker run --rm --name lets-encrypt -it \
     -v ./letsencrypt/:/etc/letsencrypt \
     --env-file env.list \
     certbot-s3front \
-        --init \
-        --agree-tos \
-        -a certbot-s3front:auth \
-        -i certbot-s3front:installer \
-        --certbot-s3front:auth-s3-bucket <YOUR_AWS_S3_BUCKET> \
-        --certbot-s3front:installer-cf-distribution-id <YOUR_AWS_CLOUDFRONT_DISTRIBUTION_ID> \
-        -d <YOUR_DOMAIN>
 ```
