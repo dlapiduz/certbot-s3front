@@ -1,8 +1,10 @@
 FROM python:3.6-alpine
-ENTRYPOINT [ "certbot" ]
 
 VOLUME /etc/letsencrypt /var/lib/letsencrypt
 WORKDIR /opt/certbot
+
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 RUN apk add --no-cache --virtual .certbot-deps \
     libffi \
@@ -19,3 +21,6 @@ RUN apk add --no-cache --virtual .build-deps \
     && pip install urllib3==1.25.11 \
     && pip install certbot-s3front \
     && apk del .build-deps
+
+
+ENTRYPOINT [ "/usr/local/bin/docker-entrypoint.sh" ]
