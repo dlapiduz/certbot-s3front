@@ -66,7 +66,7 @@ distribution. It may take a couple minutes to update.
 
 ### Automate renewal
 
-To automate the renewal process without prompts (for example, with a monthly cron), you can add the certbot parameters `--renew-by-default --text`
+To automate the renewal process without prompts (for example, with a monthly cron), you can add the certbot parameters `--non-interactive`
 
 
 ### Using with Docker
