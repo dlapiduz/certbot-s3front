@@ -18,6 +18,7 @@ RUN apk add --no-cache --virtual .build-deps \
     openssl-dev \
     musl-dev \
     libffi-dev \
+    && pip install pyOpenSSL==23.1.1 \
     && pip install urllib3==1.25.11 \
     && pip install certbot-s3front \
     && apk del .build-deps
