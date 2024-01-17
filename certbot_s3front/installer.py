@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 @zope.interface.implementer(interfaces.IInstaller)
 @zope.interface.provider(interfaces.IPluginFactory)
-class Installer(common.Plugin):
+class Installer(common.Installer):
     description = "S3/CloudFront Installer"
 
     @classmethod
