@@ -51,12 +51,12 @@ To generate a certificate and install it in a CloudFront distribution:
 ```bash
 AWS_ACCESS_KEY_ID="REPLACE_WITH_YOUR_KEY" \
 AWS_SECRET_ACCESS_KEY="REPLACE_WITH_YOUR_SECRET" \
-certbot --agree-tos -a certbot-s3front:auth \
---certbot-s3front:auth-s3-bucket REPLACE_WITH_YOUR_BUCKET_NAME \
-[ --certbot-s3front:auth-s3-region your-bucket-region-name ] #(the default is us-east-1, unless you want to set it to something else, you can delete this line) \
-[ --certbot-s3front:auth-s3-directory your-bucket-directory ] # (default is "") \
--i certbot-s3front:installer \
---certbot-s3front:installer-cf-distribution-id REPLACE_WITH_YOUR_CF_DISTRIBUTION_ID \
+certbot --agree-tos -a s3front_auth \
+--s3front_auth-s3-bucket REPLACE_WITH_YOUR_BUCKET_NAME \
+[ --s3front_auth-s3-region your-bucket-region-name ] #(the default is us-east-1, unless you want to set it to something else, you can delete this line) \
+[ --s3front_auth-s3-directory your-bucket-directory ] # (default is "") \
+-i s3front_installer \
+--s3front_installer-cf-distribution-id REPLACE_WITH_YOUR_CF_DISTRIBUTION_ID \
 -d REPLACE_WITH_YOUR_DOMAIN
 ```
 

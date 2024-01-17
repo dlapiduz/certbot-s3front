@@ -7,7 +7,7 @@ version = '0.4.2'
 
 install_requires = [
     'acme>=0.1.1',
-    'certbot>=0.9.3',
+    'certbot>=2.8.0',
     'PyOpenSSL',
     'setuptools',  # pkg_resources
     'zope.interface',
@@ -55,8 +55,8 @@ setup(
     keywords = ['certbot', 'cloudfront', 's3'],
     entry_points={
         'certbot.plugins': [
-            'auth = certbot_s3front.authenticator:Authenticator',
-            'installer = certbot_s3front.installer:Installer',
+            's3front_auth = certbot_s3front.authenticator:Authenticator',
+            's3front_installer = certbot_s3front.installer:Installer',
         ],
     },
 )

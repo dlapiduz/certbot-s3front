@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 @zope.interface.implementer(interfaces.IAuthenticator)
 @zope.interface.provider(interfaces.IPluginFactory)
-class Authenticator(common.Plugin):
+class Authenticator(common.Plugin, interfaces.Authenticator):
     description = "S3/CloudFront Authenticator"
 
     @classmethod
